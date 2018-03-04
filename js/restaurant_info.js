@@ -2,10 +2,21 @@ let restaurant;
 var map;
 
 document.addEventListener('DOMContentLoaded', (event) => {
+  DBHelper.initServiceWorker();
   fetchRestaurantFromURL((error, restaurant) => {
     fillBreadcrumb();
   });
 });
+
+initServiceWorker = () => {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./sw.js")
+    .then(registration => {
+      registration.update();
+      console.log("Service worker registered");
+    });
+  }  
+}
 /**
  * Initialize Google map, called from HTML.
  */
