@@ -20,7 +20,7 @@ self.addEventListener('install', function(event) {
 self.addEventListener('fetch', function(event) {
   event.respondWith(
 		caches.open('restaurant-sw-v1').then(function(cache) {
-      return cache.match(event.request).then(function (response) {
+      return cache.match(event.request, { ignoreSearch: true }).then(function (response) {
         return response || fetch(event.request).then(function(response) {
 					let res = response.clone();
 					if (event.request.url.indexOf('img/') > 0) {
