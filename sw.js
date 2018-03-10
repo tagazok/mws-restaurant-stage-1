@@ -1,11 +1,3 @@
-function getAllImages() {
-	const images = [];
-	for (let i = 1; i < 11; i++) {
-		images.push(`./img/${i}.jpg`);
-	}
-	return images;
-}
-
 self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open('restaurant-sw-v1').then(function(cache) {
@@ -14,12 +6,13 @@ self.addEventListener('install', function(event) {
         './',
         './index.html',
         './restaurant.html',
+				'./js/apihelper.js',
 				'./js/dbhelper.js',
         './js/main.js',
+        './js/localforage.min.js',
 				'./js/restaurant_info.js',
-        './data/restaurants.json',
 				'./css/styles.css'
-      ].concat(getAllImages()));
+      ]);
     })
   );
 });
@@ -30,7 +23,7 @@ self.addEventListener('fetch', function(event) {
       return cache.match(event.request).then(function (response) {
         return response || fetch(event.request).then(function(response) {
 					let res = response.clone();
-					if (event.request.url.indexOf('maps') < 0) {
+					if (event.request.url.indexOf('img/') > 0) {
 						cache.put(event.request, res);
 					}
           return response;

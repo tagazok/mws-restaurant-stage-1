@@ -150,7 +150,8 @@ class DBHelper {
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    return (`/img/${restaurant.photograph}`);
+    // return (`/img/${restaurant.photograph}`);
+    return (`/img/${restaurant.id}.png`);
   }
 
   /**
@@ -175,5 +176,9 @@ class DBHelper {
         console.log("Service worker registered");
       });
     }  
+  }
+
+  static add(restaurant) {
+    return localforage.setItem(String(restaurant.id), restaurant);
   }
 }

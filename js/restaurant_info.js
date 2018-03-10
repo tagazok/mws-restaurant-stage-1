@@ -39,7 +39,7 @@ window.initMap = () => {
 /**
  * Get current restaurant from page URL.
  */
-fetchRestaurantFromURL = (callback) => {
+fetchRestaurantFromURL = async (callback) => {
   if (self.restaurant) { // restaurant already fetched!
     callback(null, self.restaurant)
     return;
@@ -49,15 +49,27 @@ fetchRestaurantFromURL = (callback) => {
     error = 'No restaurant id in URL'
     callback(error, null);
   } else {
-    DBHelper.fetchRestaurantById(id, (error, restaurant) => {
-      self.restaurant = restaurant;
-      if (!restaurant) {
-        console.error(error);
+    try {
+      self.restaurant = await APIHelper.fetchRestaurantById(id);
+      if (!self.restaurant) {
         return;
-      }
-      fillRestaurantHTML();
-      callback(null, restaurant)
-    });
+      }  
+    } catch (error) {
+      console.error(error);
+    }
+    
+    fillRestaurantHTML();
+    callback(null, self.restaurant)
+
+    // DBHelper.fetchRestaurantById(id, (error, restaurant) => {
+    //   self.restaurant = restaurant;
+    //   if (!restaurant) {
+    //     console.error(error);
+    //     return;
+    //   }
+    //   fillRestaurantHTML();
+    //   callback(null, restaurant)
+    // });
   }
 }
 
