@@ -1,4 +1,4 @@
-const cacheName = 'restaurant-sw-v2';
+const cacheName = 'restaurant-sw-v2.1';
 
 function getAllImages() {
 	const images = [];
@@ -19,8 +19,9 @@ self.addEventListener('install', function(event) {
 				'./js/apihelper.js',
 				'./js/dbhelper.js',
         './js/main.js',
+        // './dist/js/bundle.js',
         './js/localforage.min.js',
-				'./js/restaurant_info.js',
+        './js/restaurant_info.js',
 				'./css/styles.css'
       ].concat(getAllImages()));
     })

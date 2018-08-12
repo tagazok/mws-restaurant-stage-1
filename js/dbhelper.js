@@ -170,7 +170,7 @@ class DBHelper {
 
   static initServiceWorker() {
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("./sw.js")
+      navigator.serviceWorker.register("sw.js")
       .then(registration => {
         registration.update();
         console.log("Service worker registered");

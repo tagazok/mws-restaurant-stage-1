@@ -3,6 +3,7 @@ var gulp  = require('gulp'),
     uglify = require('gulp-uglify-es').default
     pipe = require('gulp-pipe'),
     gzip = require('gulp-gzip'),
+    concat = require('gulp-concat'),
     sourcemaps = require('gulp-sourcemaps');
 
 // var browserSync = require('browser-sync').create();
@@ -49,10 +50,10 @@ gulp.task('copysw', function() {
 gulp.task('minify', function() {
   return gulp.src('js/*.js')
     .pipe(sourcemaps.init())
-      // .pipe(concat('bundle.js'))
       //only uglify if gulp is ran with '--type production'
       // .pipe(gutil.env.type === 'production' ? uglify() : gutil.noop()) 
     .pipe(uglify())
+    // .pipe(concat('bundle.js'))
     // .pipe(gzip())
     .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
     .pipe(sourcemaps.write())

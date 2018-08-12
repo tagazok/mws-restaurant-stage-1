@@ -46,7 +46,6 @@ class APIHelper {
     const items = [];
     await localforage.iterate(function(value, key, iterationNumber) {
       items.push(value);
-      console.log([key, value]);
     })
     return items;
   }
