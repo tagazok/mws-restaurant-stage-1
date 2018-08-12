@@ -11,7 +11,14 @@ class APIHelper {
    */
   static fetchRestaurants() {
     const url = `${APIHelper.getBaseUrl()}/restaurants`;
-    return fetch(url);
+
+    return fetch(url)
+    .then(data => {
+      return data.json();
+    })
+    .catch(error => {
+      return APIHelper.getAllRestaurants();
+    });
   }
 
   static async fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood) {
@@ -30,6 +37,7 @@ class APIHelper {
   static async fetchRestaurantById(id) {
     try {
       let restaurant = await localforage.getItem(String(id));
+      
       if (!restaurant) {
         const url = `${APIHelper.getBaseUrl()}/restaurants/${id}`;
         const response = await fetch(url);
@@ -48,10 +56,5 @@ class APIHelper {
       items.push(value);
     })
     return items;
-  }
-
-  static get(id) {
-    const url = `${APIHelper.getBaseUrl()}/restaurants/${id}`
-    return fetch(url);
   }
 }

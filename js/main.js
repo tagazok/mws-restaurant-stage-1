@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
   init();
 });
 async function init() {
-  response = await APIHelper.fetchRestaurants();
-  restaurants = await response.json();
+  restaurants = await APIHelper.fetchRestaurants();
+  
   const restaurantsPromises = [];
   const neighborhoods = new Set();
   const cuisines = new Set();
