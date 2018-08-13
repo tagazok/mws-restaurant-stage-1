@@ -61,14 +61,15 @@
     <section id="reviews-container">
       <h2>Add new review</h2>
       <div id="new-review-container">
-        <div class="review-infos">
-          <div>
-            <label>Name:</label>
-            <input type="text" id="review-author" />
-          </div>
-          <div>
+        <form role="form">
+          <div class="review-infos">
+            <div>
+              <label>Name:</label>
+              <input type="text" id="review-author" name="review-author" placeholder="Name" />
+            </div>
+            <div>
               <label>Rating:</label>
-              <select name="Rating" id="review-rating">
+              <select name="Rating" id="review-rating" name="review-rating">
                 <option value="1" selected>1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -76,14 +77,15 @@
                 <option value="5">5</option>
               </select>
             </div>
-        </div>
-        <div>
-          <label>Review:</label>
-          <textarea id="review-text" rows="4"></textarea>
-        </div>
-        <div class="add-review-actions">
-          <button id="add-review-button">Add review</button>
-        </div>
+          </div>
+          <div>
+            <label>Review:</label>
+            <textarea id="review-text" name="review-text" rows="4" placeholder="Review"></textarea>
+          </div>
+          <div class="add-review-actions">
+            <button id="add-review-button">Add review</button>
+          </div>
+        </form>
       </div>
       <h2>Reviews</h2>
       <ul id="reviews-list"></ul>
