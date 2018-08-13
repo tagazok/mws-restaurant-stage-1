@@ -12,10 +12,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
       console.log(restaurantId);
       const date = new Date().getTime();
 
+      const reviewAuthor = document.querySelector("#review-author")
+      const reviewRating = document.querySelector("#review-rating")
+      const reviewComments = document.querySelector("#review-text")
       const review = {
-        comments: document.querySelector("#review-text").value,
-        name: document.querySelector("#review-author").value,
-        rating: parseInt(document.querySelector("#review-rating").value, 10),
+        comments: reviewComments.value,
+        name: reviewAuthor.value,
+        rating: parseInt(reviewRating.value, 10),
         restaurant_id: parseInt(restaurantId, 10),
       }
 
@@ -29,6 +32,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
       const ul = document.getElementById('reviews-list');
 
       ul.appendChild(createReviewHTML(review));
+      reviewAuthor.value = "";
+      reviewRating.value = 1;
+      reviewComments.value = "";
     });
   });
 });
