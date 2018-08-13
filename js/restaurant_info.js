@@ -1,11 +1,35 @@
 let restaurant;
 var map;
+let restaurantId;
 
 DBHelper.initServiceWorker();
 
 document.addEventListener('DOMContentLoaded', (event) => {
   fetchRestaurantFromURL((error, restaurant) => {
     fillBreadcrumb();
+
+    document.querySelector("#add-review-button").addEventListener("click", e => {
+      console.log(restaurantId);
+      const date = new Date().getTime();
+
+      const review = {
+        comments: document.querySelector("#review-text").value,
+        name: document.querySelector("#review-author").value,
+        rating: parseInt(document.querySelector("#review-rating").value, 10),
+        restaurant_id: parseInt(restaurantId, 10),
+      }
+
+      if (swreg) {
+        swreg.sync.register("review").then(() => {
+          console.log('syncReviews registred');
+        });
+      }
+
+      APIHelper.addReview(restaurantId, review);
+      const ul = document.getElementById('reviews-list');
+
+      ul.appendChild(createReviewHTML(review));
+    });
   });
 });
 
@@ -36,20 +60,20 @@ async function fetchRestaurantFromURL(callback) {
     callback(null, self.restaurant)
     return;
   }
-  const id = getParameterByName('id');
-  if (!id) { // no id found in URL
+  restaurantId = getParameterByName('id');
+  if (!restaurantId) { // no id found in URL
     error = 'No restaurant id in URL'
     callback(error, null);
   } else {
     try {
-      self.restaurant = await APIHelper.fetchRestaurantById(id);
+      self.restaurant = await APIHelper.fetchRestaurantById(restaurantId);
       if (!self.restaurant) {
         return;
-      }  
+      }
     } catch (error) {
       console.error(error);
     }
-    
+
     fillRestaurantHTML();
     callback(null, self.restaurant)
   }
@@ -108,9 +132,9 @@ function fillRestaurantHoursHTML(operatingHours = self.restaurant.operating_hour
  */
 function fillReviewsHTML(reviews = self.restaurant.reviews) {
   const container = document.getElementById('reviews-container');
-  const title = document.createElement('h2');
-  title.innerHTML = 'Reviews';
-  container.appendChild(title);
+  // const title = document.createElement('h2');
+  // title.innerHTML = 'Reviews';
+  // container.appendChild(title);
 
   if (!reviews) {
     const noReviews = document.createElement('p');
@@ -129,10 +153,12 @@ function fillReviewsHTML(reviews = self.restaurant.reviews) {
  * Create review HTML and add it to the webpage.
  */
 function createReviewHTML(review) {
+  const date = new Date(review.updatedAt);
+
   const template = `
   <li>
     <p class="review-name">${review.name}</p>
-    <p class="review-date">${review.date}</p>
+     <p class="review-date">${date.toDateString()}</p>
     <p class="review-rating"><span>RATING: ${review.rating}</span></p>
     <p class="review-comments">${review.comments}</p>
   </li>
@@ -146,7 +172,7 @@ function createReviewHTML(review) {
 /**
  * Add restaurant name to the breadcrumb navigation menu
  */
-function fillBreadcrumb(restaurant=self.restaurant) {
+function fillBreadcrumb(restaurant = self.restaurant) {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;

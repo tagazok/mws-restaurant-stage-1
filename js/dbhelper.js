@@ -1,8 +1,8 @@
+var swreg = null;
 /**
  * Common database helper functions.
  */
 class DBHelper {
-
   /**
    * Database URL.
    * Change this to restaurants.json file location on your server.
@@ -173,6 +173,7 @@ class DBHelper {
       navigator.serviceWorker.register("sw.js")
       .then(registration => {
         registration.update();
+        swreg = registration;
         console.log("Service worker registered");
       });
     }  

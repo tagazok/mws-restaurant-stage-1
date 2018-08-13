@@ -61,6 +61,19 @@ nav h1 {
   padding: 0 30px 25px
 }
 
+#restaurants-list .restaurant-infos .first-line{
+  display: flex;
+  flex-direction: row;
+  flex-direction: row;
+  align-items: center;
+  margin: 20px 0 10px 0;
+}
+
+#restaurants-list .restaurant-infos h1 {
+  flex: 1;
+  margin: 0;
+}
+
 @media only screen and (min-width: 600px) {
   #restaurants-list {
     display: inline-grid;
@@ -384,6 +397,11 @@ nav h1 a {
   text-align: left;
   /* width: 270px; */
 }
+
+#restaurants-list .restaurant {
+  position: relative;
+}
+
 #restaurants-list .restaurant-img {
   background-color: #ccc;
   display: block;
@@ -500,6 +518,7 @@ nav h1 a {
   list-style-type: none;
   margin: 0 0 30px;
   overflow: hidden;
+  width: 100%
   /* padding: 0 20px 20px; */
   /* position: relative; */
   /* width: 85%; */
@@ -509,4 +528,42 @@ nav h1 a {
 } */
 #restaurant-hours td {
   color: #666;
+}
+
+.favorite {
+  font-size: 2em;
+  color: #d3d3d3;
+  padding: 0;
+  border: none;
+}
+
+.favorite.active {
+  color: #ffe400;
+}
+
+#review-text {
+  width: 100%;
+}
+
+.review-infos {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.add-review-actions {
+  display: flex;
+  justify-content: center;
+}
+
+#add-review-button {
+  background-color: #f58500;
+  color: #ffffff;
+  border-color: #f58500;
+  padding: 8px 16px;
+}
+
+#reviews-container input, #reviews-container textarea {
+  padding: 5px;
 }

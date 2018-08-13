@@ -52,7 +52,7 @@ gulp.task('minify', function() {
     .pipe(sourcemaps.init())
       //only uglify if gulp is ran with '--type production'
       // .pipe(gutil.env.type === 'production' ? uglify() : gutil.noop()) 
-    .pipe(uglify())
+    // .pipe(uglify())
     // .pipe(concat('bundle.js'))
     // .pipe(gzip())
     .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })

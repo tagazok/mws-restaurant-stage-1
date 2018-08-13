@@ -132,13 +132,16 @@ function fillRestaurantsHTML(restaurants = self.restaurants) {
  */
 function createRestaurantHTML(restaurant) {
   const template = `
-  <li>
-  <picture>
-    <source srcset="img/${restaurant.id}.webp" type="image/webp">
-    <img class="restaurant-img" src="img/${restaurant.id}.png" type="image/png" alt="Picture of the restaurant ${restaurant.name}">
-  </picture>
+  <li class="restaurant" id="restaurant-${restaurant.id}">
+    <picture>
+      <source srcset="img/${restaurant.id}.webp" type="image/webp">
+      <img class="restaurant-img" src="img/${restaurant.id}.png" type="image/png" alt="Picture of the restaurant ${restaurant.name}">
+    </picture>
     <div class="restaurant-infos">
-      <h1 tabindex="0">${restaurant.name}</h1>
+      <div class="first-line">
+        <h1 tabindex="0">${restaurant.name}</h1>
+        <button class="favorite ${isFavorite(restaurant)}" onclick="addToFavorite(${restaurant.id})">★</button>
+      </div>
       <p>${restaurant.neighborhood}</p>
       <p>${restaurant.address}</p>
       <a href="./restaurant.html?id=${restaurant.id}">View Details</a>
@@ -151,6 +154,25 @@ function createRestaurantHTML(restaurant) {
   return fragment;
 }
 
+async function addToFavorite(restaurantId) {
+  let restaurant = await localforage.getItem(String(restaurantId));
+
+  restaurant = await APIHelper.addFavorite(restaurant);
+  const elt = document.querySelector(`#restaurant-${restaurant.id} .favorite`);
+  if (restaurant.is_favorite) {
+    elt.classList.add("active");
+  } else {
+    elt.classList.remove("active");
+  }
+}
+
+function isFavorite(restaurant) {
+  console.log(`restaurant ${restaurant.id}: ${restaurant.is_favorite}`);
+  if (restaurant.is_favorite == "true") {
+    return "active";
+  }
+  return "";
+}
 /**
  * Add markers for current restaurants to the map.
  */
