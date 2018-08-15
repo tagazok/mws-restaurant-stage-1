@@ -139,12 +139,12 @@ function createRestaurantHTML(restaurant) {
     </picture>
     <div class="restaurant-infos">
       <div class="first-line">
-        <h1 tabindex="0">${restaurant.name}</h1>
+        <div class="restaurant-name" tabindex="0">${restaurant.name}</div>
         <button class="favorite ${isFavorite(restaurant)}" onclick="addToFavorite(${restaurant.id})">★</button>
       </div>
       <p>${restaurant.neighborhood}</p>
       <p>${restaurant.address}</p>
-      <a href="./restaurant.html?id=${restaurant.id}">View Details</a>
+      <a href="./restaurant.html?id=${restaurant.id}" aria-label="View details of the restaurant ${restaurant.name}">View Details</a>
     </div>
   </li>
   `;

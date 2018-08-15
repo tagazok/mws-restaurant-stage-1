@@ -21,7 +21,6 @@ self.addEventListener('install', function (event) {
         './js/apihelper.js',
         './js/dbhelper.js',
         './js/main.js',
-        // './dist/js/bundle.js',
         './js/localforage.min.js',
         './js/restaurant_info.js',
         './css/styles.css'
@@ -66,7 +65,7 @@ async function syncReview(review) {
     method: 'POST',
     body: JSON.stringify(review)
   });
-  review = response.json();
+  review = await response.json();
 
   return review;
 }
