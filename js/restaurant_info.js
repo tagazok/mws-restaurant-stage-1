@@ -22,13 +22,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
         restaurant_id: parseInt(restaurantId, 10),
       }
 
-      if (swreg) {
-        swreg.sync.register("review").then(() => {
-          console.log('syncReviews registred');
-        });
-      }
-
-      APIHelper.addReview(restaurantId, review);
+      APIHelper.addReview(restaurantId, review).then(review => {
+        if (swreg) {
+          swreg.sync.register("review").then(() => {
+            console.log('syncReviews registred');
+          });
+        }
+      });
+      
       const ul = document.getElementById('reviews-list');
 
       ul.appendChild(createReviewHTML(review));

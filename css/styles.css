@@ -12,6 +12,7 @@ header {
   top: 0;
 }
 
+
 nav {
   display: inline-grid;
 }
@@ -20,16 +21,27 @@ nav h1 {
   align-self: center;
 }
 
+#toggle-map {
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  color: #fff;
+}
+
 .filter-options {
   display: inline-grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto;
   grid-template-areas:
-    "filter-options-title filter-options-title"
+    "filter-options-title options-showmap"
     "neighborhoods-select cuisines-select";
   border-bottom: solid 1px #326c94;
 }
 
+.filter-options #toggle-map {
+  grid-area: options-showmap;
+  text-align: right;
+}
 .filter-options h2 {
   grid-area: filter-options-title;
   margin: 10px 20px 0px 20px;
@@ -104,6 +116,10 @@ nav h1 {
     display: inline-grid;
     grid-template-columns: repeat(4, 1fr);
   }
+}
+
+.hidden {
+  display:none;
 }
 
 .inside #maincontent {

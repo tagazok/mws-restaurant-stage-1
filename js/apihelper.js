@@ -1,3 +1,5 @@
+let ds = new Datastore();
+
 /**
  * Common database helper functions.
  */
@@ -36,12 +38,10 @@ class APIHelper {
 
   static async fetchRestaurantById(id) {
     try {
-      let restaurant = await localforage.getItem(String(id));
+      let restaurant = await ds.getRestaurant(id);
       
       if (!restaurant) {
         const restaurantUrl = `${APIHelper.getBaseUrl()}/restaurants/${id}`;
-        // const response = await fetch(restaurantUrl);
-        // restaurant = await response.json();
 
         const reviewsUrl = `${APIHelper.getBaseUrl()}/reviews/?restaurant_id=${id}`;
 
@@ -58,7 +58,7 @@ class APIHelper {
           restaurant.reviews = reviews;
         }
       }
-      localforage.setItem(String(restaurant.id), restaurant);
+      ds.addRestaurant(restaurant);
 
       return restaurant;
     } catch (error) {
@@ -66,10 +66,12 @@ class APIHelper {
     }
   }
 
+  static async add(restaurant) {
+    return ds.addRestaurant(restaurant);
+  }
+
   static async addReview(restaurantId, review) {
-    let restaurant = await localforage.getItem(String(restaurantId));
-    restaurant.reviews.push(review);
-    localforage.setItem(String(restaurantId), restaurant);
+    return ds.addReview(restaurantId, review);
   }
 
   static getFavorite(restaurant) {
@@ -88,15 +90,18 @@ class APIHelper {
       method: "PUT"
     });
     restaurant.is_favorite = !favorite;
-    localforage.setItem(String(restaurant.id), restaurant);
+
+    ds.addRestaurant(restaurant);
     return restaurant;
   }
 
+  static async getRestaurant(restaurantId) {
+    const items = await ds.getRestaurant(restaurantId);
+    return items;
+  }
+
   static async getAllRestaurants() {
-    const items = [];
-    await localforage.iterate(function(value, key, iterationNumber) {
-      items.push(value);
-    })
+    const items = await ds.getAllRestaurants();
     return items;
   }
 }

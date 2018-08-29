@@ -11,6 +11,20 @@ let restaurants;
 DBHelper.initServiceWorker();
 document.addEventListener('DOMContentLoaded', (event) => {
   init();
+  let mapContainer;
+  document.querySelector('#toggle-map').addEventListener('click', (event) => {
+    if (!mapContainer) {
+      initMap();
+      mapContainer = document.querySelector('#map-container');
+      mapContainer.classList.remove('hidden');
+    } else {
+      if (mapContainer.classList.contains('hidden')) {
+        mapContainer.classList.remove('hidden');
+      } else {
+        mapContainer.classList.add('hidden');
+      }
+    }
+  });
 });
 async function init() {
   restaurants = await APIHelper.fetchRestaurants();
@@ -22,7 +36,7 @@ async function init() {
   restaurants.forEach(restaurant => {
     neighborhoods.add(restaurant.neighborhood);
     cuisines.add(restaurant.cuisine_type);
-    restaurantsPromises.push(DBHelper.add(restaurant));
+    restaurantsPromises.push(APIHelper.add(restaurant));
   });
   fillNeighborhoodsHTML(neighborhoods);
   fillCuisinesHTML(cuisines);
@@ -67,6 +81,19 @@ function fillCuisinesHTML(cuisines = self.cuisines) {
 /**
  * Initialize Google map, called from HTML.
  */
+
+
+window.initMap = () => {
+  let loc = {
+    lat: 40.722216,
+    lng: -73.987501
+  };
+  self.map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 12,
+    center: loc,
+    scrollwheel: false
+  });
+}
 
 // window.initMap = () => {
 //   let loc = {
@@ -155,8 +182,7 @@ function createRestaurantHTML(restaurant) {
 }
 
 async function addToFavorite(restaurantId) {
-  let restaurant = await localforage.getItem(String(restaurantId));
-
+  let restaurant = await APIHelper.getRestaurant(restaurantId);
   restaurant = await APIHelper.addFavorite(restaurant);
   const elt = document.querySelector(`#restaurant-${restaurant.id} .favorite`);
   if (restaurant.is_favorite) {

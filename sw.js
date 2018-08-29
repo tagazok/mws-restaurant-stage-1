@@ -1,4 +1,7 @@
-self.importScripts('./js/localforage.min.js');
+self.importScripts('./js/idb.js');
+self.importScripts('./js/datastore.js');
+
+var ds = new Datastore();
 
 const cacheName = 'restaurant-sw-v2.1';
 
@@ -18,10 +21,11 @@ self.addEventListener('install', function (event) {
         './',
         './index.html',
         './restaurant.html',
+        './js/idb.js',
+        './js/datastore.js',
         './js/apihelper.js',
         './js/dbhelper.js',
         './js/main.js',
-        './js/localforage.min.js',
         './js/restaurant_info.js',
         './css/styles.css'
       ].concat(getAllImages()));
@@ -34,7 +38,6 @@ self.addEventListener('activate', event => {
     caches.keys().then(keyList => {
       return Promise.all(keyList.map(key => {
         if (key !== cacheName) {
-          console.log('Removing old cache', key);
           return caches.delete(key);
         }
       }));
@@ -60,7 +63,6 @@ self.addEventListener('fetch', function (event) {
 });
 
 async function syncReview(review) {
-  console.log(review);
   const response = await fetch(`http://localhost:1337/reviews/`, {
     method: 'POST',
     body: JSON.stringify(review)
@@ -71,14 +73,11 @@ async function syncReview(review) {
 }
 
 async function syncReviews() {
-  console.log('syncReviews');
-  await localforage.iterate(async function (restaurant, key, iterationNumber) {
-    const newReviews = [];
 
-    for(let i = 0; i < restaurant.reviews.length; i++) {
-   
-      const review = restaurant.reviews[i];
-      console.log(review);
+  const restaurants = await ds.getAllRestaurants();
+	for (let restaurant of restaurants) {
+    const newReviews = [];
+    for (let review of restaurant.reviews) {
       if (!review.id) {
         const r = await syncReview(review);
         newReviews.push(r);
@@ -86,11 +85,10 @@ async function syncReviews() {
     }
     restaurant.reviews = restaurant.reviews.filter(review => review.id);
     restaurant.reviews = restaurant.reviews.concat(newReviews);
-    localforage.setItem(String(restaurant.id), restaurant);
-  });
+    ds.addRestaurant(restaurant);
+  }
 }
 
 self.addEventListener('sync', event => {
-  console.log('sync triggered');
   event.waitUntil(syncReviews());
 });

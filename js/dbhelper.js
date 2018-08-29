@@ -178,8 +178,4 @@ class DBHelper {
       });
     }  
   }
-
-  static add(restaurant) {
-    return localforage.setItem(String(restaurant.id), restaurant);
-  }
 }

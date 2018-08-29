@@ -19,12 +19,13 @@
   </header>
 
   <main id="maincontent">
-    <!-- <section id="map-container" aria-label="Restaurant locations displayed on Google map">
+    <section id="map-container" class="hidden" aria-label="Restaurant locations displayed on Google map">
       <div id="map" role="application"></div>
-    </section> -->
+    </section>
     <section>
       <div class="filter-options">
         <h2>Filter Results</h2>
+        <button id="toggle-map">Show/Hide map</button>
         <select id="neighborhoods-select"
                 aria-label="Select a neighbourhood"
                 name="neighborhoods"
@@ -41,11 +42,12 @@
       <ul id="restaurants-list"></ul>
     </section>
   </main>
-  <script type="application/javascript" charset="utf-8" src="js/localforage.min.js"></script>
+  <script type="application/javascript" charset="utf-8" src="js/idb.js"></script>
+  <script type="application/javascript" charset="utf-8" src="js/datastore.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/apihelper.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
-  <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXYwz62UAJ5qTIYQCujbVg9jdTgUqYCik&libraries=places&callback=initMap"></script> -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXYwz62UAJ5qTIYQCujbVg9jdTgUqYCik&libraries=places"></script>
 
 
   <footer id="footer">
